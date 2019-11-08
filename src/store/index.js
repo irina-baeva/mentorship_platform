@@ -36,10 +36,7 @@ export default new Vuex.Store({
 
       },
     ],
-    user: {
-      id: 'hsdhdfh',
-      registeredSessions: ['jhbhjkm']
-  }
+    user: null
   },
   mutations: {
     createInvitation(state, payload){
@@ -101,5 +98,9 @@ export default new Vuex.Store({
         })
       }
     },
+        user (state) {
+          //return user here from vuex store 
+          return state.user
+        }
   }
 });

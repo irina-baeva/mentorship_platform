@@ -70,8 +70,19 @@ export default {
       return this.password !== this.confirmPassword
         ? "Passwords do not match"
         : "";
-    }
+    },
+    user () {
+            return this.$store.getters.user
+        }
   },
+   watch: {
+        //we watch computed user, as a value we get whatever change
+        user(value) {
+            if (value !==null && value!==undefined ) {
+                this.$router.push('/')
+            }
+        }
+    },
   methods: {
   //method when we submit: we have to reach out firebase, create new user and all this via VUEX cuz we have to store user in store
   onSignup() {
