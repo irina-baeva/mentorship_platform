@@ -3,9 +3,14 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Profile from '../views/User/Profile.vue'
 import Community from '@/views/connections/Community'
+import Sessions from '@/views/connections/Sessions'
+import Session from '@/views/connections/Session'
+import Invite from '@/views/connections/Invite'
 import Signup from '@/views/User/Signup'
 import Signin from '@/views/User/Signin'
 import EditProfile from '@/views/User/Edit'
+import Inbox from '@/views/User/Inbox'
+
 
 
 Vue.use(VueRouter)
@@ -27,9 +32,9 @@ const routes = [
       component: Community
   },
   {
-      path:'/profile',
-      name: 'Profile',
-      component: Profile
+      path:'/invite',
+      name: 'Invite',
+      component: Invite
   },
   {
       path:'/signup',
@@ -46,6 +51,23 @@ const routes = [
       name: 'EditProfile',
       component: EditProfile
   },
+  {
+      path:'/sessions',
+      name: 'Sessions',
+      component: Sessions
+  },
+  {
+    path:'/sessions/:id',
+    name: 'Session',
+    props: true,
+    component: Session
+},
+{
+  path:'/inbox',
+  name: 'Inbox',
+  props: true,
+  component: Inbox
+},
   // {
   //   path: '/about',
   //   name: 'about',

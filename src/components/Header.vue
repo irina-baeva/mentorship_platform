@@ -25,8 +25,8 @@
       </v-btn> -->
       <v-btn to="/profile">
         <v-avatar size="36px">
-          <img alt="Avatar" src="../../public/img/user.jpg">
-        </v-avatar>Khaleesi Daenerys
+          <img alt="Avatar" src="../../public/img/user.png">
+        </v-avatar>John Smith
       </v-btn>
     </v-toolbar-items>
   </v-app-bar>
@@ -43,7 +43,7 @@ export default {
   data: () => ({
     menuItems: [
       { icon: "group", title: "Community", link: "/connect" },
-      { icon: "mdi-mail", title: "Inbox", link: "/connect" },
+      { icon: "mdi-mail", title: "Inbox", link: "/inbox" },
       { icon: "mdi-face", title: "Sign Up", link: "/signup" },
       { icon: "mdi-lock", title: "Sign in", link: "/signin" },
       // { icon: "mdi-person", title: "Profile", link: "/profile" },

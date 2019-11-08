@@ -1,42 +1,51 @@
  <template>
- <v-container
-    fill-height
-    fluid
-    grid-list-xl>
-    <v-layout
-      justify-center
-      wrap
-    >
-      <v-flex
-        xs12
-        md4
-      >
-   <material-card class="v-card-profile">
-          <v-avatar
-            slot="offset"
-            class="mx-auto d-block"
-            size="130"
-          >
-            <img
-              src="../../../public/img/user.jpg"
-            >
-          </v-avatar>
-          <v-card-text class="text-xs-center">
-            <h6 class="category text-gray font-weight-thin mb-3">SE Student</h6>
-            <h6 class="category text-gray font-weight-thin mb-3">Code Unvirersity</h6>
-            <h4 class="card-title font-weight-light">Code Unvirersity</h4>
-            <h4 class="card-title font-weight-light">Name Surname</h4>
-            <p class="card-description font-weight-light">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum porro illo accusantium debitis nemo provident eaque explicabo id, eligendi cumque ab vitae, numquam fugit. Cupiditate eaque amet dolore suscipit sequi?</p>
-            <v-btn
-              color="success"
-              round
-              class="font-weight-light"
-            >Follow</v-btn>
-          </v-card-text>
-        </material-card>
+  <v-container fill-height fluid grid-list-xl>
+    <v-layout justify-center wrap>
+      <v-flex xs12 md5>
+        <v-content>
+          <v-card class="v-card-profile">
+            <v-avatar rounded class="mx-auto d-block" size="130">
+              <v-img src="../../../public/img/user.png"></v-img>
+            </v-avatar>
+            <v-card-text class="text-xs-center">
+              <h6 class="category text-gray font-weight-thin mb-3">SE Student</h6>
+              <h4 class="card-title font-weight-light">Code Unvirersity</h4>
+              <h4 class="card-title font-weight-light">Name Surname</h4>
+              <p
+                class="card-description font-weight-light"
+              >Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum porro illo accusantium debitis nemo provident eaque explicabo id, eligendi cumque ab vitae, numquam fugit. Cupiditate eaque amet dolore suscipit sequi?</p>
+              <v-flex row>
+                <v-btn color="success" round class="font-weight-light">Follow</v-btn>
+                <v-btn color="error" round class="font-weight-light ml-2" to="/invite">Invite</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" round class="font-weight-light">Edit</v-btn>
+              </v-flex>
+            </v-card-text>
+          </v-card>
+        </v-content>
       </v-flex>
-    <v-flex xs12 md8></v-flex>
+      <v-flex xs12 md7>
+        <v-content>
+          <!-- <HelloWorld/> -->
+          <UpcommingSessions />
+          <!-- <User/> -->
+        </v-content>
+      </v-flex>
     </v-layout>
- </v-container>
- </template>
-    
+  </v-container>
+</template>
+
+<script>
+import UpcommingSessions from "../../components/UpcommingSessions";
+
+export default {
+  name: "App",
+  components: {
+    UpcommingSessions
+    // HelloWorld,
+  },
+  data: () => ({
+    //
+  })
+};
+</script>

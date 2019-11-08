@@ -1,5 +1,6 @@
 # mentor-custom-app
-
+Mentorship student platform as a CODE University project 2019
+VueJS, Vuex, Vuetify, Firebase
 ## Project setup
 ```
 npm install
