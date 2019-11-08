@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -35,11 +36,18 @@ export default new Vuex.Store({
 
       },
     ],
+    user: {
+      id: 'hsdhdfh',
+      registeredSessions: ['jhbhjkm']
+  }
   },
   mutations: {
     createInvitation(state, payload){
       state.upcommingSessions.push(payload)
-    }
+    },
+      setUser(state, payload) {
+        state.user = payload
+      }
   },
   actions: {
     createInvitation({commit}, payload){
@@ -54,6 +62,27 @@ export default new Vuex.Store({
       }
       //reach out to firebase and store it then we have id and refresh it
       commit('createInvitation', invitation)
+    },
+    //payload here is object with email and passport and i want to use firebase here 
+    signUserUp({commit}, payload){
+      //use auth method, and then creaate method is a method which behind the scene reach out firebase service send our data there, validate it on the service, create new user if it is ok or error
+      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+      //promise if succesul
+      .then (
+        user =>{ 
+          //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
+          const newUser = {
+            id: user.uid,
+            registeredSessions: []
+          }
+          commit('setUser', newUser)
+        }
+      )
+      .catch(
+        error => {
+          console.log(error)
+        }
+      )
     }
   },
   getters: {
