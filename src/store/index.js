@@ -80,6 +80,26 @@ export default new Vuex.Store({
           console.log(error)
         }
       )
+    },
+    signUserIn({commit}, payload){
+      //
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+      //promise if succesul
+      .then (
+        user =>{ 
+          //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
+          const newUser = {
+            id: user.uid,
+            registeredSessions: []
+          }
+          commit('setUser', newUser)
+        }
+      )
+      .catch(
+        error => {
+          console.log(error)
+        }
+      )
     }
   },
   getters: {
