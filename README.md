@@ -5,6 +5,7 @@ VueJS, Vuex, Vuetify, Firebase
 Used technology SASS, Vanila JavaScript
 *********************
 ![Using menu](./public/img/landing_screen.png)
+![Using menu](./public/img/profile_screen.png)
 ## Project setup
 ```
 npm install
