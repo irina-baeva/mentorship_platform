@@ -1,6 +1,10 @@
 # mentor-custom-app
 Mentorship student platform as a CODE University project 2019
 VueJS, Vuex, Vuetify, Firebase
+*********************
+Used technology SASS, Vanila JavaScript
+*********************
+![Using menu](./public/img/landing_screen.png)
 ## Project setup
 ```
 npm install

@@ -39,15 +39,17 @@ export default new Vuex.Store({
     user: null
   },
   mutations: {
-    createInvitation(state, payload){
+    createInvitation(state, payload) {
       state.upcommingSessions.push(payload)
     },
-      setUser(state, payload) {
-        state.user = payload
-      }
+    setUser(state, payload) {
+      state.user = payload
+    }
   },
   actions: {
-    createInvitation({commit}, payload){
+    createInvitation({
+      commit
+    }, payload) {
       const invitation = {
         firstNameMentee: payload.firstNameMentee,
         lastNameMentee: payload.lastNameMentee,
@@ -61,45 +63,49 @@ export default new Vuex.Store({
       commit('createInvitation', invitation)
     },
     //payload here is object with email and passport and i want to use firebase here 
-    signUserUp({commit}, payload){
+    signUserUp({
+      commit
+    }, payload) {
       //use auth method, and then creaate method is a method which behind the scene reach out firebase service send our data there, validate it on the service, create new user if it is ok or error
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-      //promise if succesul
-      .then (
-        user =>{ 
-          //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
-          const newUser = {
-            id: user.uid,
-            registeredSessions: []
+        //promise if succesul
+        .then(
+          user => {
+            //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
+            const newUser = {
+              id: user.uid,
+              registeredSessions: []
+            }
+            commit('setUser', newUser)
           }
-          commit('setUser', newUser)
-        }
-      )
-      .catch(
-        error => {
-          console.log(error)
-        }
-      )
+        )
+        .catch(
+          error => {
+            console.log(error)
+          }
+        )
     },
-    signUserIn({commit}, payload){
+    signUserIn({
+      commit
+    }, payload) {
       //
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-      //promise if succesul
-      .then (
-        user =>{ 
-          //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
-          const newUser = {
-            id: user.uid,
-            registeredSessions: []
+        //promise if succesul
+        .then(
+          user => {
+            //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
+            const newUser = {
+              id: user.uid,
+              registeredSessions: []
+            }
+            commit('setUser', newUser)
           }
-          commit('setUser', newUser)
-        }
-      )
-      .catch(
-        error => {
-          console.log(error)
-        }
-      )
+        )
+        .catch(
+          error => {
+            console.log(error)
+          }
+        )
     }
   },
   getters: {
@@ -118,9 +124,9 @@ export default new Vuex.Store({
         })
       }
     },
-        user (state) {
-          //return user here from vuex store 
-          return state.user
-        }
+    user(state) {
+      //return user here from vuex store 
+      return state.user
+    }
   }
 });
