@@ -19,7 +19,7 @@
       <v-btn icon>
         <v-icon>people</v-icon>
       </v-btn>-->
-      <v-btn to="/profile">
+      <v-btn v-if="userIsAuthenticated" to="/profile">
         <v-avatar size="36px">
           <img alt="Avatar" src="../../public/img/user.png" />
         </v-avatar>John Smith
@@ -45,15 +45,14 @@ export default {
       if (this.userIsAuthenticated) {
         menuItems = [
           { icon: "group", title: "Community", link: "/connect" },
-          { icon: "mdi-mail", title: "Inbox", link: "/inbox" }
+          { icon: "mdi-mail", title: "Inbox", link: "/inbox" },
         ];
       }
       return menuItems;
     },
     userIsAuthenticated() {
       return (
-        this.$store.getters.user !== null &&
-        this.$store.getters.user !== undefined
+        this.$store.getters.user !== null &&this.$store.getters.user !== undefined
       );
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-flex xs12 sm6 offset-sm-3>
+      <v-flex class="xs12 sm6 offset-sm-3">
         <v-card>
           <v-card-text>
             <v-container>
@@ -69,33 +69,33 @@ export default {
     comparePasswords() {
       return this.password !== this.confirmPassword
         ? "Passwords do not match"
-        : "";
+        : true;
     },
-    user () {
-            return this.$store.getters.user
-        }
+    user() {
+      return this.$store.getters.user;
+    }
   },
-   watch: {
-        //we watch computed user, as a value we get whatever change
-        user(value) {
-            if (value !==null && value!==undefined ) {
-                this.$router.push('/profile')
-            }
-        }
-    },
+  watch: {
+    //we watch computed user, as a value we get whatever change
+    user(value) {
+      if (value !== null && value !== undefined) {
+        this.$router.push("/profile");
+      }
+    }
+  },
   methods: {
-  //method when we submit: we have to reach out firebase, create new user and all this via VUEX cuz we have to store user in store
-  onSignup() {
-    //vuex
-    // console.log({
-    // email: this.email,
-    // password: this.password,
-    // confirmPassword: this.confirmPassword,        // })
-    this.$store.dispatch("signUserUp", {
-      email: this.email,
-      password: this.password
-    });
-  }
+    //method when we submit: we have to reach out firebase, create new user and all this via VUEX cuz we have to store user in store
+    onSignup() {
+      //vuex
+      // console.log({
+      // email: this.email,
+      // password: this.password,
+      // confirmPassword: this.confirmPassword,        // })
+      this.$store.dispatch("signUserUp", {
+        email: this.email,
+        password: this.password
+      });
+    }
   }
 };
 </script>
