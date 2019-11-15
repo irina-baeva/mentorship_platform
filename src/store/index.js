@@ -36,7 +36,10 @@ export default new Vuex.Store({
 
       },
     ],
-    user: null
+    user: null,
+    loading: false,
+    authError: null,
+    error: false,
   },
   mutations: {
     createInvitation(state, payload) {
@@ -44,6 +47,16 @@ export default new Vuex.Store({
     },
     setUser(state, payload) {
       state.user = payload
+    },
+    setLoading(state, payload) {
+      //payload is true of false (loading or not loading)
+      state.loading = payload
+    },
+    setError(state, payload) {
+      state.error = payload
+    },
+    clearError(state){
+      state.error = null
     }
   },
   actions: {
@@ -66,11 +79,14 @@ export default new Vuex.Store({
     signUserUp({
       commit
     }, payload) {
+      commit('setLoading', true)
+      commit('clearError')
       //use auth method, and then creaate method is a method which behind the scene reach out firebase service send our data there, validate it on the service, create new user if it is ok or error
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         //promise if succesul
         .then(
           user => {
+            commit('setLoading', false)
             //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
             const newUser = {
               id: user.uid,
@@ -81,6 +97,8 @@ export default new Vuex.Store({
         )
         .catch(
           error => {
+            commit('setLoading', false)
+          commit('setError', error)
             console.log(error)
           }
         )
@@ -88,11 +106,14 @@ export default new Vuex.Store({
     signUserIn({
       commit
     }, payload) {
+      commit('setLoading', true)
+        commit('clearError')
       //
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         //promise if succesul
         .then(
           user => {
+            commit('setLoading', false)
             //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
             const newUser = {
               id: user.uid,
@@ -103,10 +124,15 @@ export default new Vuex.Store({
         )
         .catch(
           error => {
+            commit('setLoading', false)
+            commit('setError', error)
             console.log(error)
           }
         )
-    }
+    }, 
+      clearError({commit}) {
+        commit('clearError')
+      }
   },
   getters: {
     upcommingSessions(state) {
@@ -127,6 +153,12 @@ export default new Vuex.Store({
     user(state) {
       //return user here from vuex store 
       return state.user
+    },
+    loading(state){
+      return state.loading
+    },
+    error(state){
+      return state.error
     }
   }
 });

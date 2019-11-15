@@ -5,8 +5,11 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import 'vue-material-design-icons/styles.css'
+import AlertCmp from './components/Shared/Alert.vue'
+
 
 Vue.config.productionTip = false
+Vue.component('app-alert', AlertCmp)
 
 new Vue({
   router,
