@@ -18,7 +18,7 @@
                 <v-btn color="success" round class="font-weight-light">Follow</v-btn>
                 <v-btn color="error" round class="font-weight-light ml-2" to="/invite">Invite</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" round class="font-weight-light">Edit</v-btn>
+                <v-btn to="/edit" color="primary" round class="font-weight-light">Edit</v-btn>
               </v-flex>
             </v-card-text>
           </v-card>
