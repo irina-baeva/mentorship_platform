@@ -10,7 +10,7 @@ import AlertCmp from './components/Shared/Alert.vue'
 
 Vue.config.productionTip = false
 Vue.component('app-alert', AlertCmp)
-
+// var db = firebase.firestore();
 new Vue({
   router,
   store,
@@ -26,5 +26,7 @@ new Vue({
       messagingSenderId: "556324645717",
       appId: "1:556324645717:web:94788494ed21c42c171ddc"
     })
+    this.$store.dispatch('loadInvitations')
+
   }
 }).$mount('#app')

@@ -47,7 +47,7 @@ const routes = [
       component: Signin
   },
   {
-      path:'/EditProfile',
+      path:'/Edit',
       name: 'EditProfile',
       component: EditProfile
   },

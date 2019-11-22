@@ -10,7 +10,10 @@
             <v-card-text class="text-xs-center">
               <h6 class="category text-gray font-weight-thin mb-3">SE Student</h6>
               <h4 class="card-title font-weight-light">Code Unvirersity</h4>
-              <h4 class="card-title font-weight-light">Name Surname</h4>
+              <h4 class="card-title font-weight-light user_name">Name </h4>
+              <h4 class="card-title font-weight-ligh user_surname"> Surname</h4>
+              <h4 class="card-title font-weight-ligh user_email"> {{email}}</h4>
+
               <p
                 class="card-description font-weight-light"
               >Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum porro illo accusantium debitis nemo provident eaque explicabo id, eligendi cumque ab vitae, numquam fugit. Cupiditate eaque amet dolore suscipit sequi?</p>
@@ -37,6 +40,7 @@
 
 <script>
 import UpcommingSessions from "../../components/UpcommingSessions";
+import * as firebase from 'firebase'
 
 export default {
   name: "App",
@@ -45,7 +49,12 @@ export default {
     // HelloWorld,
   },
   data: () => ({
-    //
-  })
+      name: null,
+      email: null,
+  }),
+  created(){
+    let user = firebase.auth().currentUser;
+    this.email = user.email;
+  }
 };
 </script>

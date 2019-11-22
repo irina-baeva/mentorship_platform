@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -40,13 +39,20 @@ export default new Vuex.Store({
     loading: false,
     authError: null,
     error: false,
+    // name: "",
   },
   mutations: {
+    setLoadedInvitations(state, payload){
+      state.upcommingSessions = payload
+    },
     createInvitation(state, payload) {
       state.upcommingSessions.push(payload)
     },
     setUser(state, payload) {
       state.user = payload
+    },
+    SET_USER_NAME(state, payload) {
+      state.user.name = payload
     },
     setLoading(state, payload) {
       //payload is true of false (loading or not loading)
@@ -55,11 +61,33 @@ export default new Vuex.Store({
     setError(state, payload) {
       state.error = payload
     },
-    clearError(state){
+    clearError(state) {
       state.error = null
     }
   },
   actions: {
+    loadInvitations({commit}) {
+      firebase.database().ref('invitations').once('value')
+        .then((data) =>{
+          const invitations = []
+          const obj = data.val()
+          for(let key in obj) {
+            invitations.push({
+              id: key,
+              location: obj[key].location,
+              imageUrl: obj[key].imageUrl,
+              date: obj[key].date,
+            })
+          }
+          commit('setLoadedInvitations', invitations)
+
+        }) 
+        .catch((error) => {
+          console.log(error)
+          commit('setLoading', false)
+
+        })
+    },
     createInvitation({
       commit
     }, payload) {
@@ -73,7 +101,19 @@ export default new Vuex.Store({
         id: 'hakjhdnka'
       }
       //reach out to firebase and store it then we have id and refresh it
-      commit('createInvitation', invitation)
+      firebase.database().ref('invitations').push(invitation)
+        .then ((data)=> {
+          const key = data.key
+          console.log(data);
+          commit('createInvitation', {
+            ...invitation,
+            id: key})
+        })
+        .catch((error) => {
+          console.log(error)
+        }
+        )
+
     },
     //payload here is object with email and passport and i want to use firebase here 
     signUserUp({
@@ -87,18 +127,50 @@ export default new Vuex.Store({
         .then(
           user => {
             commit('setLoading', false)
-            //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
+            // console.log(user)
+            //here we get new regitarated user from firebase who is definately  has no meetups so we create new user 
             const newUser = {
               id: user.uid,
               registeredSessions: []
             }
             commit('setUser', newUser)
+            // console.log(newUser)
+            //trying to get name from display name
+            // firebase.auth().currentUser.updateProfile({displayName: payload.name})
+            // .then(() => commit('SET_USER_NAME', payload.name))
+            //tryin with db
+            // firebase.auth().onAuthStateChanged(function(user) {
+            //   if (user) {
+            //     console.log(user.displayName)
+            //     console.log(newUser.name)
+            //     console.log('heyyy')
+
+                
+            //     // User is signed in.
+            //   } else {
+            //     // No user is signed in.
+            //   }
+            // });
+            // var db = firebase.firestore();
+            // db.collection("profiles").doc(user.user.uid).set({
+            //     name: this.name,
+            //   })
+            //   console.log(name)
+            //   .then(function () {
+            //     console.log("Document successfully written!");
+            //   })
+            //   .catch(function (error) {
+            //     console.error("Error writing document: ", error);
+            //   });
+             
+              // commit('SET_USER_NAME', payload.displayName)
+              // console.log(payload.displayName)
           }
         )
         .catch(
           error => {
             commit('setLoading', false)
-          commit('setError', error)
+            commit('setError', error)
             console.log(error)
           }
         )
@@ -107,7 +179,7 @@ export default new Vuex.Store({
       commit
     }, payload) {
       commit('setLoading', true)
-        commit('clearError')
+      commit('clearError')
       //
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         //promise if succesul
@@ -129,10 +201,12 @@ export default new Vuex.Store({
             console.log(error)
           }
         )
-    }, 
-      clearError({commit}) {
-        commit('clearError')
-      }
+    },
+    clearError({
+      commit
+    }) {
+      commit('clearError')
+    }
   },
   getters: {
     upcommingSessions(state) {
@@ -154,10 +228,10 @@ export default new Vuex.Store({
       //return user here from vuex store 
       return state.user
     },
-    loading(state){
+    loading(state) {
       return state.loading
     },
-    error(state){
+    error(state) {
       return state.error
     }
   }

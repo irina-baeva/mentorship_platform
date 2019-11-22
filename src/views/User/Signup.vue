@@ -11,6 +11,18 @@
           <v-card-text>
             <v-container>
               <form @submit.prevent="onSignup">
+                 <v-layout row>
+                  <v-flex xs12>
+                    <v-text-field
+                      name="name"
+                      label="Name"
+                      id="name"
+                      v-model="name"
+                      type="text"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
                 <v-layout row>
                   <v-flex xs12>
                     <v-text-field
@@ -65,6 +77,7 @@
 export default {
   data() {
     return {
+      name: "",
       email: "",
       password: "",
       confirmPassword: ""
@@ -102,7 +115,8 @@ export default {
       // confirmPassword: this.confirmPassword,        // })
       this.$store.dispatch("signUserUp", {
         email: this.email,
-        password: this.password
+        password: this.password,
+        name: this.name
       });
     },
     onDismissed() {
