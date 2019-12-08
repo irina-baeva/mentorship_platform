@@ -10,6 +10,7 @@ import Signup from '@/views/User/Signup'
 import Signin from '@/views/User/Signin'
 import EditProfile from '@/views/User/Edit'
 import Inbox from '@/views/User/Inbox'
+// import AuthGuard from './auth-guard'
 
 
 
@@ -24,17 +25,22 @@ const routes = [
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
+    component: Profile,
+    // beforeEnter: AuthGuard
+
   },
   {
       path:'/connect',
       name: 'Community',
-      component: Community
+      component: Community,
+
   },
   {
       path:'/invite',
       name: 'Invite',
-      component: Invite
+      component: Invite,
+      // beforeEnter: AuthGuard
+
   },
   {
       path:'/signup',
@@ -54,7 +60,8 @@ const routes = [
   {
       path:'/sessions',
       name: 'Sessions',
-      component: Sessions
+      component: Sessions,
+
   },
   {
     path:'/sessions/:id',

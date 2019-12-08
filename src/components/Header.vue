@@ -25,6 +25,12 @@
         </v-avatar>John Smith
       </v-btn>
     </v-toolbar-items>
+     <v-toolbar-items v-if="userIsAuthenticated">
+        <v-btn @click = "onLogout" v-if="userIsAuthenticated" >
+          <v-icon left>mdi-logout</v-icon>
+          Logout
+        </v-btn>
+      </v-toolbar-items>
   </v-app-bar>
 </template>
 
@@ -54,6 +60,11 @@ export default {
       return (
         this.$store.getters.user !== null &&this.$store.getters.user !== undefined
       );
+    }
+  },
+  methods: {
+    onLogout() {
+      this.$store.dispatch('logout')
     }
   }
 };

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -89,8 +90,7 @@ export default new Vuex.Store({
         })
     },
     createInvitation({
-      commit
-    }, payload) {
+      commit}, payload) {
       const invitation = {
         firstNameMentee: payload.firstNameMentee,
         lastNameMentee: payload.lastNameMentee,
@@ -127,44 +127,18 @@ export default new Vuex.Store({
         .then(
           user => {
             commit('setLoading', false)
-            // console.log(user)
+            // console.log(firebase.auth().currentUser)
             //here we get new regitarated user from firebase who is definately  has no meetups so we create new user 
+            
             const newUser = {
-              id: user.uid,
+              id: user.user.uid,
               registeredSessions: []
             }
             commit('setUser', newUser)
-            // console.log(newUser)
-            //trying to get name from display name
-            // firebase.auth().currentUser.updateProfile({displayName: payload.name})
-            // .then(() => commit('SET_USER_NAME', payload.name))
-            //tryin with db
-            // firebase.auth().onAuthStateChanged(function(user) {
-            //   if (user) {
-            //     console.log(user.displayName)
-            //     console.log(newUser.name)
-            //     console.log('heyyy')
+            console.log(newUser)
 
-                
-            //     // User is signed in.
-            //   } else {
-            //     // No user is signed in.
-            //   }
-            // });
-            // var db = firebase.firestore();
-            // db.collection("profiles").doc(user.user.uid).set({
-            //     name: this.name,
-            //   })
-            //   console.log(name)
-            //   .then(function () {
-            //     console.log("Document successfully written!");
-            //   })
-            //   .catch(function (error) {
-            //     console.error("Error writing document: ", error);
-            //   });
-             
-              // commit('SET_USER_NAME', payload.displayName)
-              // console.log(payload.displayName)
+
+  
           }
         )
         .catch(
@@ -188,9 +162,10 @@ export default new Vuex.Store({
             commit('setLoading', false)
             //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
             const newUser = {
-              id: user.uid,
+              id: user.user.uid,
               registeredSessions: []
             }
+            console.log(newUser)
             commit('setUser', newUser)
           }
         )
@@ -202,6 +177,14 @@ export default new Vuex.Store({
           }
         )
     },
+    autoSignIn({commit}, payload){
+      commit('setUser', {id: payload.uid, registeredMeetups: []})
+    },
+    logout({commit}){
+      firebase.auth().signOut()
+      commit('setUser', null)
+    },
+
     clearError({
       commit
     }) {
