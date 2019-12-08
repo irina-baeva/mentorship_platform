@@ -46,6 +46,7 @@
 </template>
 
 <script>
+const fb = require('../../firebaseConfig.js')
 export default {
   data() {
     return {
@@ -70,12 +71,14 @@ export default {
   methods: {
   //method when we submit: we have to reach out firebase, create new user and all this via VUEX cuz we have to store user in store
   onSignin() {
-
-    this.$store.dispatch("signUserIn", {
-      email: this.email,
-      password: this.password
-    });
-  }
+    fb.auth.signInWithEmailAndPassword(this.email, this.password).then(user => {
+        this.$store.commit('setCurrentUser', user.user)
+        this.$store.dispatch('fetchUserProfile')
+        this.$router.push('/profile')
+    }).catch(err => {
+        console.log(err)
+    })
+}
   }
 };
 </script>

@@ -4,19 +4,22 @@
       <v-flex xs12 md5>
         <v-content>
           <v-card class="v-card-profile">
-            <v-avatar rounded class="mx-auto d-block" size="130">
-              <v-img src="../../../public/img/user.png"></v-img>
+            <v-flex>
+            <v-avatar class="mx-auto d-block" size="130">
+              <v-img :src="userProfile.imageUrl" class="profile__image"></v-img>
             </v-avatar>
-            <v-card-text class="text-xs-center">
-              <h6 class="category text-gray font-weight-thin mb-3">SE Student</h6>
-              <h4 class="card-title font-weight-light">Code Unvirersity</h4>
-              <h4 class="card-title font-weight-light user_name">Name </h4>
-              <h4 class="card-title font-weight-ligh user_surname"> Surname</h4>
-              <h4 class="card-title font-weight-ligh user_email"> {{email}}</h4>
+            </v-flex>
 
-              <p
-                class="card-description font-weight-light"
-              >Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum porro illo accusantium debitis nemo provident eaque explicabo id, eligendi cumque ab vitae, numquam fugit. Cupiditate eaque amet dolore suscipit sequi?</p>
+            <v-card-text class="text-xs-center">
+
+        
+          <a class="profile__link" :href="userProfile.linkedin"><v-icon class="profile__icon" size="30px" color = "blue">fab fa-linkedin-in</v-icon></a>
+          <a class="profile__link" :href="userProfile.github"><v-icon size="30px" color = "black">fab fa-github</v-icon></a>
+          <p class="card-title font-weight-light">{{userProfile.university}}</p>
+          <p class="card-title font-weight-ligh user_surname"> {{userProfile.name}}</p>
+          <p
+            class="card-description font-weight-light"
+          >{{userProfile.about}}</p>
               <v-flex row>
                 <v-btn color="success" round class="font-weight-light">Follow</v-btn>
                 <v-btn color="error" round class="font-weight-light ml-2" to="/invite">Invite</v-btn>
@@ -40,7 +43,9 @@
 
 <script>
 import UpcommingSessions from "../../components/UpcommingSessions";
-import * as firebase from 'firebase'
+// import * as firebase from 'firebase'
+import { mapState } from 'vuex'
+// const fb = require('../../firebaseConfig.js')
 
 export default {
   name: "App",
@@ -49,12 +54,25 @@ export default {
     // HelloWorld,
   },
   data: () => ({
-      name: null,
-      email: null,
+
   }),
+  computed: {
+            ...mapState(['userProfile', 'currentUser'])
+        },
   created(){
-    let user = firebase.auth().currentUser;
-    this.email = user.email;
+
   }
 };
 </script>
+<style  scoped>
+.profile__image {
+  border-radius: 50%;
+}
+.profile__link {
+  text-decoration: none;
+}
+.profile__icon {
+  margin-right: 3%;
+}
+
+</style>

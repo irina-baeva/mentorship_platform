@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
-
+const fb = require('../firebaseConfig.js')
 Vue.use(Vuex)
+// fb.auth.onAuthStateChanged(user => {
 
+//   fb.usersCollection.doc(user.uid).onSnapshot(doc => {
+//     this.$store.commit('setUserProfile', doc.data())
+// })
+// })
 export default new Vuex.Store({
   state: {
     upcommingSessions: [{
@@ -36,24 +41,27 @@ export default new Vuex.Store({
 
       },
     ],
-    user: null,
+    currentUser: null,
+    userProfile: {},
     loading: false,
     authError: null,
     error: false,
     // name: "",
   },
   mutations: {
-    setLoadedInvitations(state, payload){
+    setLoadedInvitations(state, payload) {
       state.upcommingSessions = payload
     },
     createInvitation(state, payload) {
       state.upcommingSessions.push(payload)
     },
-    setUser(state, payload) {
-      state.user = payload
+    setCurrentUser(state, val) {
+      state.currentUser = val
+      console.log(state.currentUser)
+
     },
-    SET_USER_NAME(state, payload) {
-      state.user.name = payload
+    setUserProfile(state, val) {
+      state.userProfile = val
     },
     setLoading(state, payload) {
       //payload is true of false (loading or not loading)
@@ -67,12 +75,33 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    loadInvitations({commit}) {
+    autoSignIn({
+      commit
+    }, payload) {
+      commit('setCurrentUser', {
+        id: payload,
+        registeredMeetups: []
+      })
+    },
+    fetchUserProfile({
+      commit,
+      state
+    }) {
+      fb.usersCollection.doc(state.currentUser.id.uid).get().then(res => {
+        console.log(state.currentUser.id.uid)
+        commit('setUserProfile', res.data())
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    loadInvitations({
+      commit
+    }) {
       firebase.database().ref('invitations').once('value')
-        .then((data) =>{
+        .then((data) => {
           const invitations = []
           const obj = data.val()
-          for(let key in obj) {
+          for (let key in obj) {
             invitations.push({
               id: key,
               location: obj[key].location,
@@ -82,7 +111,7 @@ export default new Vuex.Store({
           }
           commit('setLoadedInvitations', invitations)
 
-        }) 
+        })
         .catch((error) => {
           console.log(error)
           commit('setLoading', false)
@@ -90,7 +119,8 @@ export default new Vuex.Store({
         })
     },
     createInvitation({
-      commit}, payload) {
+      commit
+    }, payload) {
       const invitation = {
         firstNameMentee: payload.firstNameMentee,
         lastNameMentee: payload.lastNameMentee,
@@ -101,18 +131,18 @@ export default new Vuex.Store({
         id: 'hakjhdnka'
       }
       //reach out to firebase and store it then we have id and refresh it
-      firebase.database().ref('invitations').push(invitation)
-        .then ((data)=> {
+      fb.database().ref('invitations').push(invitation)
+        .then((data) => {
           const key = data.key
           console.log(data);
           commit('createInvitation', {
             ...invitation,
-            id: key})
+            id: key
+          })
         })
         .catch((error) => {
           console.log(error)
-        }
-        )
+        })
 
     },
     //payload here is object with email and passport and i want to use firebase here 
@@ -129,7 +159,7 @@ export default new Vuex.Store({
             commit('setLoading', false)
             // console.log(firebase.auth().currentUser)
             //here we get new regitarated user from firebase who is definately  has no meetups so we create new user 
-            
+
             const newUser = {
               id: user.user.uid,
               registeredSessions: []
@@ -138,7 +168,7 @@ export default new Vuex.Store({
             console.log(newUser)
 
 
-  
+
           }
         )
         .catch(
@@ -149,47 +179,69 @@ export default new Vuex.Store({
           }
         )
     },
-    signUserIn({
+
+    logout({
       commit
-    }, payload) {
-      commit('setLoading', true)
-      commit('clearError')
-      //
-      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-        //promise if succesul
-        .then(
-          user => {
-            commit('setLoading', false)
-            //here we get new regitarated user from firebase who is definately not has meetups so we create new user 
-            const newUser = {
-              id: user.user.uid,
-              registeredSessions: []
-            }
-            console.log(newUser)
-            commit('setUser', newUser)
-          }
-        )
-        .catch(
-          error => {
-            commit('setLoading', false)
-            commit('setError', error)
-            console.log(error)
-          }
-        )
-    },
-    autoSignIn({commit}, payload){
-      commit('setUser', {id: payload.uid, registeredMeetups: []})
-    },
-    logout({commit}){
+    }) {
       firebase.auth().signOut()
-      commit('setUser', null)
+      commit('setCurrentUser', null)
     },
 
     clearError({
       commit
     }) {
       commit('clearError')
-    }
+    },
+    updateProfile({
+      commit,
+      state
+    }, data) {
+      console.log(data)
+      let name = data.name
+      let university = data.university
+      let linkedin = data.linkedin
+      let github = data.github
+      let imageUrl = data.imageUrl
+      let about = data.about;
+      // let key = data.key;
+      console.log(state.currentUser.uid)
+      // let key;
+      fb.usersCollection.doc(state.currentUser.id.uid).update({
+        name,
+        university,
+        linkedin,
+        github,
+        imageUrl,
+        about
+      }).then(user => {
+        console.log(user)
+        console.log(commit)
+
+        // update all comments by user to reflect new name
+
+      })
+    //JUST TRYING
+   
+      // .then(key => {
+      //   const filename = data.image.name
+      //   const ext = filename.slice(filename.lastIndexOf('.'))
+      //   return firebase.storage().ref('users_avatars/' + key + '.' +ext).put(data.image)
+      // })
+      // .then(fileData => {
+      //   imageUrl = fileData.getMetadata.downloadURLs[0]
+      //   return firebase.database().ref('users_avatars').child(key).update({imageUrl: imageUrl})
+      // })
+      // .then (()=>{
+      //   commit('setUserProfile', {
+      //     imageUrl: imageUrl,
+      //     id: key
+      //   } )
+      // })
+      //////
+      .catch(err => {
+        console.log(err)
+      })
+    },
   },
   getters: {
     upcommingSessions(state) {
@@ -209,7 +261,7 @@ export default new Vuex.Store({
     },
     user(state) {
       //return user here from vuex store 
-      return state.user
+      return state.currentUser
     },
     loading(state) {
       return state.loading

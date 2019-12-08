@@ -1,20 +1,20 @@
 import firebase from 'firebase'
 import 'firebase/firestore'
+import 'firebase/storage'
 
 // firebase init goes here
+// Your web app's Firebase configuration
 var firebaseConfig = {
-    apiKey: "AIzaSyCLTNx5w1k5hb_wLXqw1IgFHl4Gl5Pgg-g",
-    authDomain: "mentorship-app-a4c85.firebaseapp.com",
-    databaseURL: "https://mentorship-app-a4c85.firebaseio.com",
-    projectId: "mentorship-app-a4c85",
-    storageBucket: "mentorship-app-a4c85.appspot.com",
-    messagingSenderId: "556324645717",
-    appId: "1:556324645717:web:94788494ed21c42c171ddc"
+    apiKey: "AIzaSyAdv_tkOodrxVjDsCqbOdirxTAC4hSHDrM",
+    authDomain: "mentor-clone.firebaseapp.com",
+    databaseURL: "https://mentor-clone.firebaseio.com",
+    projectId: "mentor-clone",
+    storageBucket: "gs://mentor-clone.appspot.com",
+    messagingSenderId: "178180145985",
+    appId: "1:178180145985:web:06756bef98cca538b4d7c0"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-
 
 // firebase utils
 const db = firebase.firestore()
@@ -29,6 +29,7 @@ db.settings(settings)
 
 // firebase collections
 const usersCollection = db.collection('users')
+const sessionCollection = db.collection('session')
 const postsCollection = db.collection('posts')
 const commentsCollection = db.collection('comments')
 const likesCollection = db.collection('likes')
@@ -40,5 +41,6 @@ export {
     usersCollection,
     postsCollection,
     commentsCollection,
-    likesCollection
+    likesCollection,
+    sessionCollection
 }

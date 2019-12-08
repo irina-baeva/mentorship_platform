@@ -21,8 +21,8 @@
       </v-btn>-->
       <v-btn v-if="userIsAuthenticated" to="/profile">
         <v-avatar size="36px">
-          <img alt="Avatar" src="../../public/img/user.png" />
-        </v-avatar>John Smith
+          <v-img :src="userProfile.imageUrl" class="profile__image"></v-img>
+        </v-avatar>{{userProfile.name}}
       </v-btn>
     </v-toolbar-items>
      <v-toolbar-items v-if="userIsAuthenticated">
@@ -36,13 +36,15 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld';
-
+import { mapState } from 'vuex'
 export default {
   name: "Header",
   components: {
     // User,
   },
   computed: {
+...mapState(['userProfile']),
+
     menuItems() {
       let menuItems = [
         { icon: "mdi-face", title: "Sign Up", link: "/signup" },

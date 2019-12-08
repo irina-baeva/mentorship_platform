@@ -75,14 +75,17 @@
 
 <script>
 // import * as firebase from 'firebase'
+const fb = require('../../firebaseConfig.js')
 
 export default {
+
   data() {
     return {
       name: "",
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      university: ""
     };
   },
   computed: {
@@ -109,18 +112,24 @@ export default {
   },
   methods: {
     //method when we submit: we have to reach out firebase, create new user and all this via VUEX cuz we have to store user in store
-    onSignup() {
-      //vuex
-      // console.log({
-      // email: this.email,
-      // password: this.password,
-      // confirmPassword: this.confirmPassword,        // })
-      this.$store.dispatch("signUserUp", {
-        email: this.email,
-        password: this.password,
-        name: this.name
-      });
-    },
+   onSignup() {
+    fb.auth.createUserWithEmailAndPassword(this.email, this.password).then(user => {
+        this.$store.commit('setCurrentUser', user.user)
+
+        // create user obj
+        fb.usersCollection.doc(user.user.uid).set({
+            name: this.name,
+            university: this.university,
+        }).then(() => {
+            this.$store.dispatch('fetchUserProfile')
+            this.$router.push('/profile')
+        }).catch(err => {
+            console.log(err)
+        })
+    }).catch(err => {
+        console.log(err)
+    })
+},
     onDismissed() {
       console.log("Dismised");
       this.$store.dispatch("clearError");
