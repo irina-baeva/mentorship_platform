@@ -115,11 +115,10 @@ export default {
    onSignup() {
     fb.auth.createUserWithEmailAndPassword(this.email, this.password).then(user => {
         this.$store.commit('setCurrentUser', user.user)
-
+        console.log(user.user.uid)
         // create user obj
         fb.usersCollection.doc(user.user.uid).set({
             name: this.name,
-            university: this.university,
         }).then(() => {
             this.$store.dispatch('fetchUserProfile')
             this.$router.push('/profile')

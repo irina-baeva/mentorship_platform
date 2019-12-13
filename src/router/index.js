@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
 import Profile from '../views/User/Profile.vue'
 import Community from '@/views/connections/Community'
 import Sessions from '@/views/connections/Sessions'
@@ -17,11 +17,12 @@ import Inbox from '@/views/User/Inbox'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
+  // {
+  //   path: '/',
+  //   name: 'home',
+  //   component: Home
+  // },
+  { path: '*', redirect: '/profile' },
   {
     path: '/profile',
     name: 'profile',

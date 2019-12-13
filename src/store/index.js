@@ -87,8 +87,8 @@ export default new Vuex.Store({
       commit,
       state
     }) {
-      fb.usersCollection.doc(state.currentUser.id.uid).get().then(res => {
-        console.log(state.currentUser.id.uid)
+      fb.usersCollection.doc(state.currentUser.uid).get().then(res => {
+        console.log(state.currentUser.uid)
         commit('setUserProfile', res.data())
       }).catch(err => {
         console.log(err)

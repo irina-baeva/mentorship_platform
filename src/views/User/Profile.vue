@@ -34,6 +34,7 @@
         <v-content>
           <!-- <HelloWorld/> -->
           <UpcommingSessions />
+          <CreatePost/>>
           <!-- <User/> -->
         </v-content>
       </v-flex>
@@ -43,6 +44,8 @@
 
 <script>
 import UpcommingSessions from "../../components/UpcommingSessions";
+import CreatePost from "../../components/CreatePost";
+
 // import * as firebase from 'firebase'
 import { mapState } from 'vuex'
 // const fb = require('../../firebaseConfig.js')
@@ -50,7 +53,8 @@ import { mapState } from 'vuex'
 export default {
   name: "App",
   components: {
-    UpcommingSessions
+    UpcommingSessions,
+    CreatePost
     // HelloWorld,
   },
   data: () => ({
