@@ -16,27 +16,41 @@ Vue.component('app-alert', AlertCmp)
 
 let app
 fb.auth.onAuthStateChanged((user) => {
-    if (!app) {
-        app = new Vue({
-            el: '#app',
-            router,
-            store,
-            vuetify,
-            render: h => h(App),
-            created(){
-              firebase.auth().onAuthStateChanged((user)=> {
-                if(user) {
-                  this.$store.dispatch('autoSignIn', user)
-                }
-              }),
-              this.$store.dispatch('loadInvitations')
-              fb.usersCollection.doc(user.uid).onSnapshot(doc => {
-                this.$store.commit('setUserProfile', doc.data())
-            })
+  if (!app) {
+    app = new Vue({
+      el: '#app',
+      router,
+      store,
+      vuetify,
+      render: h => h(App),
+      created() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              this.$store.dispatch('autoSignIn', user)
+              fb.postsCollection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+                let postsArray = []
+                // console.log(querySnapshot)
+                querySnapshot.forEach(doc => {
+                  let post = doc.data()
+                  post.id = doc.id
+                  postsArray.push(post)
+                })
+      
+                this.$store.commit('setPosts', postsArray)
+              })
+
             }
+          }),
+          this.$store.dispatch('loadInvitations')
+        fb.usersCollection.doc(user.uid).onSnapshot(doc => {
+          this.$store.commit('setUserProfile', doc.data())
         })
-    }
-    console.log(user)
+        // realtime updates from our posts collection
+
+      }
+    })
+  }
+  console.log(user)
 })
 
 

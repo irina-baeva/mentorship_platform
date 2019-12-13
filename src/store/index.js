@@ -46,6 +46,7 @@ export default new Vuex.Store({
     loading: false,
     authError: null,
     error: false,
+    posts:[]
     // name: "",
   },
   mutations: {
@@ -72,6 +73,9 @@ export default new Vuex.Store({
     },
     clearError(state) {
       state.error = null
+    },
+    setPosts(state, val){
+      state.posts = val
     }
   },
   actions: {
@@ -220,24 +224,6 @@ export default new Vuex.Store({
         // update all comments by user to reflect new name
 
       })
-    //JUST TRYING
-   
-      // .then(key => {
-      //   const filename = data.image.name
-      //   const ext = filename.slice(filename.lastIndexOf('.'))
-      //   return firebase.storage().ref('users_avatars/' + key + '.' +ext).put(data.image)
-      // })
-      // .then(fileData => {
-      //   imageUrl = fileData.getMetadata.downloadURLs[0]
-      //   return firebase.database().ref('users_avatars').child(key).update({imageUrl: imageUrl})
-      // })
-      // .then (()=>{
-      //   commit('setUserProfile', {
-      //     imageUrl: imageUrl,
-      //     id: key
-      //   } )
-      // })
-      //////
       .catch(err => {
         console.log(err)
       })
