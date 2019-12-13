@@ -1,5 +1,5 @@
 <template>
-      <v-card max-width="600" class="mx-auto">
+      <v-card  max-width="600" class="mx-auto upcommingSession" >
         <!-- <v-system-bar color="pink darken-2" dark> -->
           <!-- <v-spacer></v-spacer>
 
@@ -64,3 +64,8 @@ export default {
   }
 };
 </script>
+<style lang="css">
+.upcommingSession{
+  margin-top: 20px;
+}
+</style>

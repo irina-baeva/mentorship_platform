@@ -28,13 +28,13 @@
               </v-flex>
             </v-card-text>
           </v-card>
+          <UpcommingSessions />
         </v-content>
       </v-flex>
-      <v-flex xs12 md7>
+      <v-flex xs12 md6>
         <v-content>
           <!-- <HelloWorld/> -->
-          <UpcommingSessions />
-          <CreatePost/>>
+          <CreatePost/>
           <!-- <User/> -->
         </v-content>
       </v-flex>
