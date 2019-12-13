@@ -33,14 +33,14 @@
             <h5>{{ post.userName }}</h5>
             <span>{{ post.createdOn | formatDate }}</span>
             <p>{{ post.content | trimLength }}</p>
-            <ul>
-              <li>
+            <ul class="comments-list">
+              <li class="comments-list__item">
                 <a>comments {{ post.comments }}</a>
               </li>
-              <li>
+              <li class="comments-list__item">
                 <a>likes {{ post.likes }}</a>
               </li>
-              <li><a>view full post</a></li>
+              <li class="comments-list__item"><a>view full post</a></li>
             </ul>
           </div>
         </div>
@@ -107,5 +107,16 @@ export default {
 <style  lang="css">
 .posts-container{
     margin-top: 20px;
+}
+.post {
+    margin-top: 40px;
+}
+.comments-list {
+    display: flex;
+    justify-content:flex-start;
+    list-style: none;
+}
+.comments-list__item {
+    margin-right: 20px;
 }
 </style>
