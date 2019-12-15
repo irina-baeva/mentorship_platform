@@ -25,7 +25,7 @@
       </div>
     </v-flex>
   </v-card>
-  <v-card class="posts-container">
+  <v-card max-width="600" class="mx-auto posts-container">
     <v-flex>
       <div class="col2">
         <div v-if="posts.length">
